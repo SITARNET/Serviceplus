@@ -43,3 +43,42 @@
 # serviceplus -> urls.py -> path('service/', index) -> импортируем маршрут (связываем функцию index с url)
 # serviceplus -> Mark Directory as -> Sources root - для корректного импортирования
 # service -> urls.py - создаём свои маршруты в пакете (если будем переносить пакет на другой сайт)
+
+# 3. Маршрутизация, обработка исключений запросов, перенаправления
+
+# path('cats/<int:catsid>/', categories)
+# str - любая не пустая строка, исключая символ /
+# int - любое положительное, целое число включая 0
+# slug - слаг, то есть, латиница ASCII таблицы, символы дефиса и подчёркивания
+# uuid - цыфры, малые латинские ASCII, дефис
+# path - любая не пустая строка, включая символ /
+# re_path() - для использования регулярных выражений
+
+# Обработка GET и POST запросов
+# http://127.0.0.1:8000/?name=Gagarina&cat=music - GET запрос
+# request.GET (POST)
+
+# Обработка искючений при запросах к серверу
+# serviceplus -> settings.py -> DEBUG = False - режим откладки отключён
+# serviceplus -> settings.py -> ALLOWED_HOSTS = ['127.0.0.1']
+
+# handler404 = pageNotFound -> serviceplus/urls.py
+# serviceplus/view.py -> pageNotFound(request, exception)
+
+# Обработка исключений при запросах к серыеру
+# hundler500 - ошибка сервера
+# hundler403 - доступ запрещён
+# hundler400 - невозможно обработать запрос
+
+# Создание 301 и 302 редиректов
+# 301 - страница перемещена на другой постоянный URL-адрес
+# 302 - страница перемещена на другой временный URL-адрес
+
+# import django.shortcuts
+# django.shortcuts.redirect
+
+# return redirect('/', permanent=True)
+# без параметра permanent -> 302
+# c параметром permanent=True -> 301
+
+# name='home' - используем имя для редиректа (serviceplus/urls.py)
