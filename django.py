@@ -82,3 +82,42 @@
 # c параметром permanent=True -> 301
 
 # name='home' - используем имя для редиректа (serviceplus/urls.py)
+
+# 4. Определение моделей. Миграции: создание и выполнение
+
+# SQLite, MySQL, PortageSQL, Oracle...
+# WSGI-приложение -> API интерфейс -> Django ORM -> Драйвер ORN -> SQLite....
+# ORM (Object-Relation Mapping) - объектно-реляционное отображение
+# sudo apt update
+# sudo apt-cache search sqlite
+# sudo apt install sqlite3
+# sudo apt update
+# sudo apt install sqlitebrowser
+
+# serviceplus -> service -> models.py
+# id: integer, primary key
+# title: Varchar
+# content: Text
+# photo: Image
+# time_create: DataTime
+# Time_update: DataTime
+# is_published: Boolean
+
+# djbook.ru/rel3.0/ref/models/fields.html
+# Чтобы Django могло сохранять фото, надо настроить две константы: FileField -> MEDIA_ROOT, MEDIA_URL
+# serviceplus -> settings.py -> MEDIA_ROOT = os.path.join(BASE_DIR, 'media') -> import os
+# MEDIA_URL = '/media/'
+
+# Это настраиваеться только в откладочном режиме (не на реальном сервере) -> DEBUG = True
+# serviceplus -> urls.py
+# from django.conf.urls.static import static
+# from serviceplus import settings
+# if settings.DEBUG:
+#       urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Добавляем файлы миграций в папку "migration" -> чтобы добавить структуру таблиц
+# ../serviceplus$ python manage.py makemigrations
+# python -m pip install Pillow -> пакет для работы с фото
+# service/migrations/0001_initial.py
+# python manage.py sqlmigrate service 0001 -> посмотреть SQL-запрос для модели women под номером 0001
+# python manage.py migrate -> запускаем миграцию (sql-запрос)
