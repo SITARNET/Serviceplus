@@ -121,3 +121,69 @@
 # service/migrations/0001_initial.py
 # python manage.py sqlmigrate service 0001 -> посмотреть SQL-запрос для модели women под номером 0001
 # python manage.py migrate -> запускаем миграцию (sql-запрос)
+
+# 5. Django
+
+# CRUD - Create, Read, Update, Delete
+# ORM фркймворка Django
+
+# python manage.py shell -> консоль фрймворка
+# >>> from service.models import Service
+# >>> Service(title='Ремонт ноутбуков', content='Ми делаем комплекс. Чистка, замена термопасты, настройка Windows')
+# >>> w1 = _ - ссылка на объект Service
+# >>> w1.save() - запись в таблицу
+# >>> w1.id -> 1
+# >>> w1.title -> Ремонт ноутбуков
+# >>> w1.pk (=w1.id) -> 1
+# >>> from django.db import connection
+# >>> connection.queries - посмотреть SQL-запросы
+# >>> w3 = Service()
+# >>> w3.title = 'Ремонт системного блока'
+# >>> w3.content = 'Полный комплекс работ по ремонту системного блока'
+# >>> w3.save()
+
+# Или используем другой метод
+# >>> Service.objects
+# >>> w4 = Service.objects.create(title='Заправка картриджей', content='Заправка или регенирация лазерных картриджей') - записываеться сразу в базу
+# >>> w4
+# >>> w4.title
+# >>> w4.pk
+
+# Можно без присвоения переменной
+# >>> Service.objects.create(title='Кира Найтли', content='Биография Киры Найтли')
+# >>> Service.objacts.all() - все текущие записи
+# models.py -> def __str__(self): return self.title в классе Women
+# >>> exit() - выходим из оболочки Django (перезапускаем)
+# >>> python manage.py shell
+# >>> from service.models import Service
+# >>> Service.objects.all() -> <QuerySet [<Service: Анджелина Джоли>, <Service: Энн.... -> ограничение на 21 запись!
+# >>> w = _ - присваеваем список
+# >>> w[0] -> <Service: Анджелина Джоли>
+# >>> w[0].title -> 'Анджелина Джоли'
+# >>> len(w) -> 5
+# >>> for wi in w: print(wi.title) -> Анджелина Джоли, Энн Хэтэуэй, Джулия Робертс, Ума Турман, Кира Найтли
+
+# >>> Service.objects.filter(title='Энн Хэтэуэй') - выбока с помощью фильтра
+# >>> Service.objects.filter(pk=2) -> <QuerySet [<Service: Энн Хэтэуэй>]>
+# >>> Service.objects.filter() => <имя_атрибута>__gte - сравнение больше или равно (>=)
+# >>> Service.objects.filter() => <имя_атрибута>__lte - сравнение меньше или равно (<=)
+# >>> Service.objects.filter(pk__gte=2) => <QuerySet [<Service: Энн Хэтэуэй>, <Women: Джулия Робертс>, <Women: Ума Турман>...
+
+# >>> Service.objects.exclude(pk=2) => выбирает все записи, которые НЕ соответствуют критерию
+
+# >>> Service.objects.get(pk=2) => выбирает если точно знаем что запись есть, иначе генерирует исключение
+
+# >>> Service.objects.filter(pk__lte=4).order_by('title') - сортировка
+# >>> Service.objects.order_by('time_update')
+# >>> Service.objects.order_by('-time_update') - обратная сортировка
+
+# >>> wu = Service.objects.get(pk=2)
+# >>> wu.tutle = 'Ремонт мониторов' - присваеваем новое значение
+# >>> wu.content = 'Качественный ремонт мониторов любой сложности.' - присваеваем новое значение
+# >>> wu.save() - сохраняем
+
+# >>> wd = Service.objects.filter(pk__gte=4)
+# >>> wd -> <QuerySet [<Service: Ума Турман>, <Women: Кира Найтли>]>
+# >>> wd.delete() -> (2, {'service.Service': 2}) - удалили две записи
+
+# http://djbook.ru/rel3.0/topics/db/queries.html
