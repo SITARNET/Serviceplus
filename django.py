@@ -199,3 +199,26 @@
 # https://djbook.ru/rel3.0/topics/templates.html
 
 # {% extends 'women/base.html' %} # наследование общего шаблона
+
+
+# 7. Подключение статических файлов. Фильтры шаблонов
+
+# CSS, JavaScript
+# serviceplus/static -> общая папка для реального сервера
+# serviceplus/serviceplus/static -> не стандартный путь
+# serviceplus/service/static -> не стандартный путь
+
+# python manage.py collectstatic -> берутся все файлы из не стандартных путей и перемещаються в serviceplus/static
+
+# В пакете кофигураций надо определить (serviceplus/settings.py):
+# STATIC_URL - префикс URL-адреса для статических файлов
+# STATIC_ROOT - путь к общей статической папке, исп. реальным сервером
+# STATICFILES_DIRS - список нестандартных путей к статическим файлам, исп. для сбора и для режима откладки
+
+# serviceplus/service/static/service -> пространство имён
+# serviceplus/service/static/service/css
+# serviceplus/service/static/service/js
+# serviceplus/service/static/service/images
+
+# {% load static %} - служит для подключения статических файлов
+# https://djbook.ru/rel3.0/ref/templates/builtins.html#ref-templates-builtins-filters - фильтры
