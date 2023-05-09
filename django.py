@@ -265,3 +265,45 @@
 # Category.objects.create(name='Техника')
 # w_list = Service.objects.all()
 # w_list.update(cat_id=1)
+
+
+# 10. Начинаем работу с админ-панелью
+
+# setting.py -> LANGUAGE_CODE = 'ru'
+# 127.0.0.1:8000/admin/
+
+# создаём администратора
+# ...serviceplus/serviceplus -> python mange.py createsuperuser
+
+# Регистрируем наше приложение Women
+# ...serviceplus/service/admin.py -> from .models import * -> admin.site.register(Service)
+
+# используем вложенный класс для настройки админ-панели -> class Meta в models.py
+# apps.py -> verbose_name = 'Сервис' # если settings.py -> INSTALLED_APPS -> service.apps.ServiceConfig (а не service)
+# Добавляем поля ->admin.py
+
+# list_display = ('',...) - список полей которые мы хотим видеть
+# list_display_links = ('',...) - список полей на которые мы можем кликнуть
+# search_fields = ('',...) - по каким полям можно производить поиск
+# list_editable = ('',) - поле будет редактируемым
+# list_filter = ('',...) - поля по которым сможем фильтровать список полей
+# admin.site.register(Women, WomenAdmin) # регистрируем класс
+
+# Переводим названия title, time create, photo, is published
+# models.py -> в class Service -> добавляем к каждому полю verbose_name='...'
+
+# Регистрируем Category
+
+# Вносим в таблицы базы данных мета описания
+# Создаём файл миграции
+# ../serviceplus -> python manage.py makemigrations -> создаётся файл
+# python manage.py migrate -> применяем все миграции для базы данных
+
+
+# 11. Пользовательские теги шаблонов
+
+# Убираем дублирование с помощью пользовательских тегов в models.py
+# simple tags - простые теги
+# inclusion tags - включающие теги, формирует свой шаблон и возвращает html
+
+# https://djbook.ru/rel3.0/howto/custom-template-tags.html
