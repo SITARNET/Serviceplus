@@ -306,4 +306,6 @@
 # simple tags - простые теги
 # inclusion tags - включающие теги, формирует свой шаблон и возвращает html
 
+# service/templatetags -> __init__.py
+
 # https://djbook.ru/rel3.0/howto/custom-template-tags.html
