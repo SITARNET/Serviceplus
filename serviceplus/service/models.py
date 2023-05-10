@@ -22,6 +22,7 @@ class Service(models.Model):
         verbose_name_plural = 'Сервисные работы'
         ordering = ['time_create']
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Категория")
 

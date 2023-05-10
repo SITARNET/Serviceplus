@@ -3,19 +3,12 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 
 from .models import *
 
-menu = [{'title': "О сайте", 'url_name': 'about'},
-        {'title': "Добавить статью", 'url_name': 'add_page'},
-        {'title': "Обратная связь", 'url_name': 'contact'},
-        {'title': "Войти", 'url_name': 'login'}
-        ]
-
 
 def index(request):
     posts = Service.objects.all()
 
     context = {
         'posts': posts,
-        'menu': menu,
         'title': 'Главная страница',
         'cat_selected': 0,
     }
@@ -23,7 +16,7 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'service/about.html', {'menu': menu, 'title': 'О сайте'})
+    return render(request, 'service/about.html', {'title': 'О сайте'})
 
 
 def addpage(request):
@@ -54,7 +47,6 @@ def show_category(request, cat_id):
 
     context = {
         'posts': posts,
-        'menu': menu,
         'title': 'Отображение по категориям',
         'cat_selected': cat_id,
     }
