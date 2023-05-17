@@ -433,3 +433,29 @@
 
 # forms.py -> def clean_title(self): # clean_+название поля для которого пишем валидатор
 # ValidationError импортируем
+
+
+# 15. Классы представлений: ListView, DetailView, CreateView
+
+# CBV - Class-Based Views
+# djbook.ru/rel1.9/ref/class-based-views/index.html
+
+# вместо функции index создадим класс представлений
+# ListView - список чего либо
+# <имя приложения>/<имя модели>_list.html
+# service/service_list.html - стандартный путь к шаблону
+# template_name = 'service/index.html' - прописываем свой путь к шаблону
+# в urls.py -> path('', ServiceHome.as_view(), name='home')
+# заголовок -> Главная страница -> extra_content = {'title': 'Главная страница'} - для статических данных
+# для динамических -> def get_context_data()
+
+# отображение статей отмеченные для публикации
+
+# Для отображения списка категорий
+# allow_empty = False # 404 если нету такой категории
+# DetailView - для отображения поста
+# CreateView - для добавления поста
+
+# success_url = reverse_lazy('home') - для перенаправления на home, когда добавили статью
+# и если не определили функцию get_absolute_url() -> models.py
+
