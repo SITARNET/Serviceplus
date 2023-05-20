@@ -20,7 +20,7 @@ class ServiceHome(ListView):
         return context
 
     def get_queryset(self):
-        return Service.objects.filter(is_published=True)
+        return Service.objects.filter(is_published=True).order_by('-pk')
 
 # def index(request):
 #     posts = Service.objects.all()
@@ -118,7 +118,7 @@ class ServiceCategory(ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Service.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True)
+        return Service.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).order_by('-pk')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

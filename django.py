@@ -151,13 +151,13 @@
 
 # Можно без присвоения переменной
 # >>> Service.objects.create(title='Кира Найтли', content='Биография Киры Найтли')
-# >>> Service.objacts.all() - все текущие записи
+# >>> Service.objects.all() - все текущие записи
 # models.py -> def __str__(self): return self.title в классе Women
 # >>> exit() - выходим из оболочки Django (перезапускаем)
 # >>> python manage.py shell
 # >>> from service.models import Service
 # >>> Service.objects.all() -> <QuerySet [<Service: Анджелина Джоли>, <Service: Энн.... -> ограничение на 21 запись!
-# >>> w = _ - присваеваем список
+# >>> w = _ - присваиваем список
 # >>> w[0] -> <Service: Анджелина Джоли>
 # >>> w[0].title -> 'Анджелина Джоли'
 # >>> len(w) -> 5
@@ -459,3 +459,147 @@
 # success_url = reverse_lazy('home') - для перенаправления на home, когда добавили статью
 # и если не определили функцию get_absolute_url() -> models.py
 
+
+# 16. Основы ORM Django
+
+# Методы сортировки
+# djbook.ru/rel3.0/ref/models/querysets.html
+# python manage.py shell
+# from service.models import *
+# Service.objects.all() - все записи
+# Service.objects.all()[:5] - первые 5 записей
+# from django.db import connection
+# connection.queries - показывает sql-запросы
+# Service.objects.all()[3:8] - с 3 по 8 (8 не вкл.)
+# Service.objects.order_by('pk') - сортировка по полю pk (id)
+# Service.objects.order_by('-pk') - в обратном порядке
+# Service.objects.all().reverse() - в обратном порядке
+
+# Метод filter() - список записей по атрибуту
+# Service.objects.filter(pk__lte=2) - pk <= 2
+# Service.objects.get(pk=2) - выбор одной записи
+
+# Обработка связанных таблиц
+# w = Service.objects.get(pk=1)
+# w.title..., w.is_published - значения полей записи таблицы women;
+# w.pk, w.id - идентификаторы записи (первичный ключ);
+# w.cat_id - идентификатор рубрики (внешний ключ);
+# w.cat - объект класса Category, хранящий данные записи с id = cat_id.
+
+# Запросы с использованием первичной модели (_set)
+# w.cat.name -> Техника
+# c = Category.objects.get(pk=1)
+# c -> <Category: Техника>
+# c.service_set.all() - выводит все записи с категории Техника
+# есл хотим использовать, например: get_posts, то в models.py -> cat = models.ForeignKey(..., related_name='get_posts')
+
+# Фильтры полей Fields lookups
+# <имя атрибута>__gte - сравнение больше или равно (>=);
+# <имя атрибута>__lte - сравнение меньше или равно (<=);
+
+# Service.objects.filter(title__contains='ли') -> ищет в title слог 'ли'
+# Service.objects.filter(title__icontains='ли') -> ищет в title слог 'ли' без учёта регистра с латинскими символами
+# Service.objects.filter(pk__in=[2,5,11,12]) -> выбираем записи по перечисленным значениям
+# Service.objects.filter(pk__in=[2,5,11,12], is_published=True) -> два условия
+# Service.objects.filter(cat__in=[1,2]) -> выведет из Актрис и Певиц
+
+# Класс Q: И ИЛИ НЕ
+# & - логическое И (приоритет 2)
+# | - логическое ИЛИ (приоритет 3)
+# ~ - логическое НЕ (приоритет 1)
+# from django.db.models import Q
+# Service.objects.filter(Q(pk__lt=5) | Q(cat_id=2)) -> pk>=5 или cat_id=2
+# Service.objects.filter(~Q(pk__lt=5) | Q(cat_id=2)) -> pk<=5 или cat_id=2
+
+# Быстрое получение записи из таблиц
+# Service.objects.first() -> первая запись
+# Service.objects.last() -> последняя запись
+
+# Получение записи по дате
+# Service.objects.latest('time_update') -> самая поздняя запись
+# Service.objects.earliest('time_update') -> самая последняя запись
+
+# Выбор записи относительно текущей (по дате)
+# w = Service.objects.get(pk=7)
+# w
+# w.get_previous_by_time_update() -> предыдущая запись
+# w.get_next_by_time_update() -> следующая запись
+
+# exists() - проверка существования записи
+# count() - получение числа записей
+# добавим новую категорию -> Category.objects.create(name='Спортсменки', slug='sportsmenky')
+# c3 = Category.objects.get(pk=3)
+# c3
+# c3.service_set.exists() -> False (нету ни одной записи связанной)
+# c2.service_set.exists() -> True
+
+# # c2.service_set.exists() -> 7 - количество записей
+
+# Обращение к полю первичной модели через атрибут
+# Service.objects.filter(cat__slug='Техника')
+# <имя первичной модели>__<название поля первичной модели>
+# Service.objects.filter(cat__name='Расходники')
+# Service.objects.filter(cat__name__contains='хо')
+# Category.objects.filter(service__title__contains='ли') -> выбираем все категории которые связаны в вторичной модели Service
+# Category.objects.filter(service__title__contains='ли').distinct() -> вытираем все уникальные категории
+
+# Функции агрегации
+# Все функции агрегации надо импортировать
+# from django.db.models import *
+# Service.objects.aggregate(Min('cat_id')) -> {'cat_id__min': 1}
+# Service.objects.aggregate(Min('cat_id'), Max('cat_id')) -> {'cat_id__min': 1, 'cat_id__max': 2}
+# другие ключи
+# Service.objects.aggregate(cat_min=Min('cat_id'), cat_max=Max('cat_id')) -> {'cat_min': 1, 'cat_max': 2}
+# стандартные математические операции
+# Service.objects.aggregate(res=Sum('cat_id') - Count('cat_id')) -> {'res': 7} - вычитание
+# Service.objects.aggregate(res=Avg('cat_id')) -> {'res': 1.5} - среднее арифметическое
+# Service.objects.filter(pk__gt=4).aggregate(res=Avg('cat_id')) -> используем фильтр pk>=4
+
+# Выбор записей из конкретных её полей
+# Service.objects.value('title', 'cat_id').get(pk=1) -> {'title': 'Анджелина Джоли', 'cat_id': 1} - этот запрос работает быстрее
+# Service.objects.value('title', 'cat__name').get(pk=1) -> {'title': 'Анджелина Джоли', 'cat__name': 'Актрисы'}
+# w = Service.objects.value('title', 'cat_name')
+# for p in w:
+#   print(p['title'], p['cat__name']) -> Ариана Гранде Певицы, Анастасия Эшли Певицы.....
+
+# Группировка записей (метод annotate)
+# Service.objects.value('cat_id').annotate(Count('id')) -> [{'cat_id': 1, 'id_count': 7}, {'cat_id': 2, 'id_count': 7}]
+# Service.objects.annotate(Count('cat'))
+# c = Women.objects.annotate(Count('women'))
+# c -> [<Category: Актрисы>, <Category: Певицы>, <Category: Спортсменки>]
+# с[0].service__count -> 7
+# c[1].service__count -> 7
+# c = Service.objects.annotate(total=Count('service'))
+# c[0].total -> 7
+# len(c) -> 3
+# c = Service.objects.annotate(total=Count('service')).filter(total__gt=0)
+# c -> [<Category: Актрисы>, <Category: Певицы>]
+
+# Класс F
+# from django.db.models import F
+# Service.objects.filter(pk__gt=F('cat_id')) -> pk>cat_id - все записи кроме первой
+# Допустим. Для увеличение значения при просмотре таблицы
+# Service.objects.filter(slug='bejonce').update(views=F('views')+1)
+# Или
+# w = Service.objects.get(pk=1)
+# w -> Service: Анджелина Джоли
+# w.view = F('view')+1
+# w.save()
+
+# Вычисления на стороне СУБД
+# from django.db.models.functions import Length
+# ps = Service.objects.annotate(len=Length('title'))
+# ps
+# for item in ps:
+#   print(item.title, item.len) -> Анджелина Джоли 15 Дженифер Лоуренс 17....
+
+# raw SQL запросы - запросы в чистом виде
+# Manager.raw(<SQL-запрос>)
+# Service.objects.raw('SELECT * FROM service_service') -> <RawQuerySet: SELECT * FROM service_service>
+# w = _
+# for p in w:
+#  print(p.pk, p.title) -> 1 Анджелина Джоли 2 Дженнифер Лоуренс......
+
+# Передача параметров в запрос
+# slug = 'Shakira' - переменная
+# Service.objects.raw("SELECT id, title FROM service_service WHERE slug='%s'", [slug]) -> безопасная вставка переменной
