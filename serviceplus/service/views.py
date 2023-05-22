@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import *
 from .models import *
+from .utils import *
 
 
-class ServiceHome(ListView):
+class ServiceHome(DataMixin, ListView):
     model = Service
     template_name = 'service/index.html'
     context_object_name = 'posts'
@@ -15,9 +17,8 @@ class ServiceHome(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
-        context['cat_selected'] = 0
-        return context
+        c_def = self.get_user_context(title="Главная страница")
+        return context | c_def
 
     def get_queryset(self):
         return Service.objects.filter(is_published=True).order_by('-pk')
@@ -49,15 +50,17 @@ def about(request):
 #         form = AddPostForm()
 #     return render(request, 'service/addpage.html', {'form': form, 'title': 'Добавление статьи'})
 
-class AddPage(CreateView):
+class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'service/addpage.html'
     success_url = reverse_lazy('home')
+    #login_url = reverse_lazy('home') # если не авторизирован, перенаправляет на home
+    raise_exception = False # 403 Forbidden
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Добавление статьи'
-        return context
+        c_def = self.get_user_context(title="Добавление статьи")
+        return context | c_def
 
 
 def contact(request):
@@ -84,17 +87,16 @@ def pageNotFound(request, exception):
 #     return render(request, 'service/post.html', context=context)
 
 
-class ShowPost(DetailView):
+class ShowPost(DataMixin, DetailView):
     model = Service
     template_name = 'service/post.html'
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post'
 
-    def get_context_data(self, *, object_list=None,**kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = context['post']
-        context['cat_selected'] = context['post'].cat_id
-        return context
+        c_def = self.get_user_context(title=context['post'], cat_selected=context['post'].cat_id)
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 # def show_category(request, cat_slug):
@@ -111,7 +113,7 @@ class ShowPost(DetailView):
 #     }
 #     return render(request, 'service/index.html', context=
 
-class ServiceCategory(ListView):
+class ServiceCategory(DataMixin, ListView):
     model = Service
     template_name = 'service/index.html'
     context_object_name = 'posts'
@@ -122,6 +124,6 @@ class ServiceCategory(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Категория - ' + str(context['posts'][0].cat)
-        context['cat_selected'] = context['posts'][0].cat_id
-        return context
+        c_def = self.get_user_context(title='Категория - ' + str(context['posts'][0].cat),
+                                      cat_selected=context['posts'][0].cat_id)
+        return dict(list(context.items()) + list(c_def.items()))

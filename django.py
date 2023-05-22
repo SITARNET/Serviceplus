@@ -501,7 +501,7 @@
 # Service.objects.filter(title__icontains='ли') -> ищет в title слог 'ли' без учёта регистра с латинскими символами
 # Service.objects.filter(pk__in=[2,5,11,12]) -> выбираем записи по перечисленным значениям
 # Service.objects.filter(pk__in=[2,5,11,12], is_published=True) -> два условия
-# Service.objects.filter(cat__in=[1,2]) -> выведет из Актрис и Певиц
+# Service.objects.filter(cat__in=[1,2]) -> выведет из двух категорий
 
 # Класс Q: И ИЛИ НЕ
 # & - логическое И (приоритет 2)
@@ -565,7 +565,7 @@
 # Группировка записей (метод annotate)
 # Service.objects.value('cat_id').annotate(Count('id')) -> [{'cat_id': 1, 'id_count': 7}, {'cat_id': 2, 'id_count': 7}]
 # Service.objects.annotate(Count('cat'))
-# c = Women.objects.annotate(Count('women'))
+# c = Women.objects.annotate(Count('service'))
 # c -> [<Category: Актрисы>, <Category: Певицы>, <Category: Спортсменки>]
 # с[0].service__count -> 7
 # c[1].service__count -> 7
@@ -603,3 +603,23 @@
 # Передача параметров в запрос
 # slug = 'Shakira' - переменная
 # Service.objects.raw("SELECT id, title FROM service_service WHERE slug='%s'", [slug]) -> безопасная вставка переменной
+
+
+# 17. Mixins - убираем дублирование кода
+
+# DataMixin для class ServiceHome, AddPage, ShowPost, ServiceCategory
+# djbooks.ru/rel3.0/topics/auth/defult.html
+
+# LoginRequiredMixin - миксин для классов
+# @login_required - декоратор для функции
+
+# Авторизованные будут видеть пункт "Добавить статью"
+# user_menu = menu.copy()
+# if not self.request.user.is_authenticated:
+#   user_menu.pop(1)
+# context['menu'] = user_menu
+
+# Если в категории нету постов, то - не отображать
+# from django.db.models.aggregates import Count
+# cats = Category.objects.annotate(Count('service')) -> utils.py
+# {% if c.service__count > 0 %} ... {% endif %} -> base.html
