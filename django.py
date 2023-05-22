@@ -623,3 +623,42 @@
 # from django.db.models.aggregates import Count
 # cats = Category.objects.annotate(Count('service')) -> utils.py
 # {% if c.service__count > 0 %} ... {% endif %} -> base.html
+
+
+# 18. Постраничная навигация (пагинация)
+
+# docs.djangoproject.com/en/3.1/topics/pagination/
+# docs.djangoproject.com/en/3.1/ref/paginator/
+
+# в классе paginate_by = 3 - количество статей на странице
+# в функции:
+# from django.core.paginator import Paginator
+
+# def about(request): - функция представления
+#   contact_list = Service.objects.all()
+#   paginator = Paginator(contact_list, 3)
+#   page_number = request.GET.get('page')
+#   page_obj = paginator.get_page(page_number)
+#   return render(request, 'service/about.html', {'page_obj': page_obj, 'menu': menu, 'title': "О сайте"})
+
+# в about.html
+# {% for contact in page_obj %}
+# <p>{{ contact }}</p>
+# {% endfor %}
+
+# /?page=3
+
+# Список страниц 1 2 3 4
+# <nav>
+#     <ul>
+#         {% for p in page_obj.paginator.page_range %}
+#         <li>
+#             <a href="?page={{ p }}">{{ p }}</a>
+#         </li>
+#         {% endfor %}
+#     </ul>
+# </nav>
+
+# Пагинация для класса представления смотри в коде...
+
+# Для пагинации лучше сортировать в models.py по id -> Meta -> ordering = ['id']

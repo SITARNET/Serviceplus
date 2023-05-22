@@ -21,7 +21,7 @@ class Service(models.Model):
     class Meta:
         verbose_name = 'Сервисные работы'
         verbose_name_plural = 'Сервисные работы'
-        ordering = ['time_create']
+        ordering = ['id']
 
 
 class Category(models.Model):
