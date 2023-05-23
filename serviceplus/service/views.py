@@ -60,7 +60,7 @@ class ShowPost(DataMixin, DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['post'], cat_selected=context['post'].cat_id)
-        return dict(list(context.items()) + list(c_def.items()))
+        return context | c_def
 
 
 class ServiceCategory(DataMixin, ListView):
@@ -76,4 +76,15 @@ class ServiceCategory(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Категория - ' + str(context['posts'][0].cat),
                                       cat_selected=context['posts'][0].cat_id)
-        return dict(list(context.items()) + list(c_def.items()))
+        return context | c_def
+
+
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'service/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Регистрация")
+        return context | c_def
