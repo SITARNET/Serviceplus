@@ -21,11 +21,11 @@ class ServiceHome(DataMixin, ListView):
         return context | c_def
 
     def get_queryset(self):
-        return Service.objects.filter(is_published=True).order_by('-pk')
+        return Service.objects.filter(is_published=True).order_by('-pk').select_related('cat')
 
 
 def about(request):
-    return render(request, 'service/about.html', {'title': 'О сайте'})
+    return render(request, 'service/about.html', {'title': 'О сайте', 'menu': menu})
 
 
 class AddPage(LoginRequiredMixin, DataMixin, CreateView):
@@ -68,12 +68,13 @@ class ServiceCategory(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Service.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).order_by('-pk')
+        return Service.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).order_by('-pk').select_related('cat')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Категория - ' + str(context['posts'][0].cat),
-                                      cat_selected=context['posts'][0].cat_id)
+        c = Category.objects.get(slug=self.kwargs['cat_slug'])
+        c_def = self.get_user_context(title='Категория - ' + str(c.name),
+                                      cat_selected=c.pk)
         return context | c_def
 
 

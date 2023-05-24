@@ -688,3 +688,65 @@
 
 # при регистрации автоматически делает вход
 # метод from_valid(self, form) -> class RegisterUser
+
+
+# 21. Оптимизация сайта с Django Debug Toolbar
+
+# Django Debug Toolbar
+# Скорость работы приложения
+# Нагрузку на СУБД (частота и сложность запросов)
+# Корректность возвращаемых пользователю данных
+# pypi.org -> django debug toolbar
+# pip install django-debug-toolbar -> устанавливаем в виртуальном окружении (venv)
+# Прикручиваем к сайту
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+
+# settings.py
+# INSTALLED_APPS = [
+#     # ...
+#     "django.contrib.staticfiles",
+#     # ...
+# ]
+
+# MIDDLEWARE = [
+#     # ...
+#     "debug_toolbar.middleware.DebugToolbarMiddleware",
+#     # ...
+# ]
+
+# INTERNAL_IPS = [
+#     # ...
+#     "127.0.0.1",
+#     # ...
+# ]
+
+# from django.urls import include, path
+# urlpatterns = [
+#     # ...
+#     path('__debug__/', include('debug_toolbar.urls')),
+# ]
+
+# urls.py ->
+# if settings.DEBUG:
+#     urlpatterns = [
+#         path('__debug__/', include('debug_toolbar.urls')),
+#     ] + urlpatterns
+#
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Ленивые - отложенные запросы выполняются в момент непосредственного обращения к данным (используются в единичных)
+# если много записей -> увеличивает число запросов к базе - это плохо для сервера
+
+# select_related(key) - "жадная" загрузка связанных данных по внешнему ключу key, который имеет тип ForeignKey
+# prefetch_related(key) - "жадная" загрузка связанных данных по внешнему ключу key, который имеет тип ManyToManyField
+
+# Главная страница -> все женщины
+# views.py -> class ServiceHome() -> .select_related('cat')
+# cat -> потому что в models.py -> cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категории')
+
+# Категории
+# views.py -> class ServiceCategory() -> .select_related('cat')
+
+# views.py -> class ServiceCategory() -> def get_context_data()
+# c = Category.objects.get(slug=self.kwargs['cat_slug'])
+#         c_def = self.get_user_context(title='Категория - ' + str(c.name), cat_selected=c.pk)
