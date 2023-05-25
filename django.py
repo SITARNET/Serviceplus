@@ -777,3 +777,20 @@
 # from django.core.cache import cache
 
 # Всё кэширование надо включать на конечном этапе разработки сайта!!!
+
+
+# 23. Использование капчи captcha (Обратная связь)
+
+# Обратная связь (использование капчи Captcha)
+# views.py -> class ContactFormView(DataMixin, FormView)
+# forms.py -> class ContactForm(forms.Form)
+# urls.py -> path('contact/', ContactFormView.as_view(), name='contact')
+
+# https://pypi.org/ -> django-simple-captcha
+# pip install django-simple-captcha
+# settings.py -> INSTALLED_APPS -> captcha
+# python manage.py migrate
+# serviceplus/urls.py -> path('captcha/', include('captcha.urls'))
+# forms.py -> captcha = CaptchaField()
+
+# https://django-simple-captcha.readthedocs.io/en/latest/
