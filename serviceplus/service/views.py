@@ -32,8 +32,7 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'service/addpage.html'
     success_url = reverse_lazy('home')
-    #login_url = reverse_lazy('home') # если не авторизирован, перенаправляет на home
-    raise_exception = False # 403 Forbidden
+    raise_exception = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
