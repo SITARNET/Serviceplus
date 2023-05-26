@@ -794,3 +794,38 @@
 # forms.py -> captcha = CaptchaField()
 
 # https://django-simple-captcha.readthedocs.io/en/latest/
+
+
+# 24. Тонкая настройка админ панели
+
+# https://docs.djangoproject.com/en/3.1/ref/contrib/admin/
+# serviceplus -> templates -> admin -> base_site.html
+# serviceplus/settings.py -> TEMPLATES -> 'DIRS': [os.path.join(BASE_DIR, 'templates')]
+# service/static/css/admin.css
+# {% load static %}
+# {% block extrastyle %}
+# <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+# {% endblock %}
+# код элемента -> смотрим селекторы
+
+# Меняем заголовки
+# admin.py -> admin.site.site_title = '...'
+# admin.site.site_header = '...'
+
+# Отображение миниатюр в списке вместо ссылок на картинки
+# admin.py -> class ServiceAdmin() ->
+# from django.utils.safestring import mark_safe
+# def get_html_photo(self, object):
+#   if object.photo:
+#       return mark_safe(f"<img src='{object.photo.url}' width=50>")
+# list_display -> 'get_html_photo'
+# get_html_photo.short_description = "Миниатюра"
+
+# отображение фото при редактировании статьи
+# admin.py -> class ServiceAdmin() ->
+# порядок редактируемых и не редактируемых полей
+# fields = ('title', 'slug', 'cat', 'content', 'photo', 'is_published', 'time_create' , 'time_update')
+# не редактируемые поля
+# readonly_fields = ('time_create', 'time_update', 'get_html_photo')
+
+# для отображение кнопок редактирования сверху -> save_on_top = True
