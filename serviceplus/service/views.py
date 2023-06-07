@@ -1,9 +1,10 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, FormView
+from django.views.generic import ListView, DetailView, CreateView, FormView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import *
@@ -21,11 +22,16 @@ class ServiceHome(DataMixin, ListView):
         return context | c_def
 
     def get_queryset(self):
-        return Service.objects.filter(is_published=True).order_by('-pk').select_related('cat')
+        return Service.objects.filter(is_published=True).select_related('cat')
 
 
-def about(request):
-    return render(request, 'service/about.html', {'title': 'О сайте', 'menu': menu})
+class AboutPage(DataMixin, TemplateView):
+    template_name = 'service/about.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Про нас')
+        return context | c_def
 
 
 class AddPage(LoginRequiredMixin, DataMixin, CreateView):
@@ -36,12 +42,9 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавление статьи")
+        c_def = self.get_user_context(title="Добавити статтю")
         return context | c_def
 
-
-# def contact(request):
-#     return HttpResponse("Обратная связь")
 
 class ContactFormView(DataMixin, FormView):
     form_class = ContactForm
@@ -86,7 +89,7 @@ class ServiceCategory(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c = Category.objects.get(slug=self.kwargs['cat_slug'])
-        c_def = self.get_user_context(title='Категория - ' + str(c.name),
+        c_def = self.get_user_context(title='Категорія - ' + str(c.name),
                                       cat_selected=c.pk)
         return context | c_def
 

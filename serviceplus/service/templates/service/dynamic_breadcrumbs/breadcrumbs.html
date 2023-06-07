@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumbs" itemprop="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+	{% for item in posts %}
+		{% if forloop.first %}
+		<li class="breadcrumbs-item">{{ item.cat }}</li>
+		<li class="breadcrumbs-item"><a href="{{ item.slug }}">{{ item.title }}</a></li>
+		{% endif %}
+	{% endfor %}
+    </ol>
+</nav>

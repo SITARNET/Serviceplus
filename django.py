@@ -829,3 +829,8 @@
 # readonly_fields = ('time_create', 'time_update', 'get_html_photo')
 
 # для отображение кнопок редактирования сверху -> save_on_top = True
+
+
+# 25. Настройка сайта
+
+# Меняем стили оформления

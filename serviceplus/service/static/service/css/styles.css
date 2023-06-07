@@ -1,5 +1,5 @@
 html, body {
-	font-family: 'Arial';
+	font-family: Verdana, Geneva, Arial, Helvetica;
 	margin: 0;
 	padding: 0;
 	height: 100%;
@@ -39,6 +39,13 @@ p.link-read-post a {
 	background: #333671;
 	color: #fff;
 	text-decoration: none;
+	border-radius: 10px;
+}
+
+p.link-read-post a:hover {
+    color: red;
+    background: #fff;
+    border: 3px solid #333671;
 }
 
 div.article-panel {
@@ -47,6 +54,7 @@ div.article-panel {
     box-sizing: border-box;
     overflow: hidden;
     color: #555;
+    font-size: 15px;
 }
 div.article-panel p.first {
     margin: 0;
@@ -76,13 +84,13 @@ ul.list-articles li {
 .clear {clear: both;}
 
 .header {
-	background: #3F4137;
+	background: #fff;
 	height: 60px;
 }
 
 .logo {
 	background: url('../images/logo.png') no-repeat 10px 5px;
-	width: 70px;
+	width: 260px;
 	height: 60px;
 }
 
@@ -91,23 +99,24 @@ ul.mainmenu {
 	margin: 0;
 	padding: 0;
 	height: 60px;
-	color: #fdc073;
+	color: #0059b2;
 	font-size: 20px;
 	overflow: hidden;
 }
 ul.mainmenu li {
-	float: left;
+	float: right;
 	margin: 18px 40px 0 30px;
 }
-ul.mainmenu li.logo {margin: 0;}
+ul.mainmenu li.logo {margin: 0; float: left;}
 ul.mainmenu li.last {float: right;}
 
 ul.mainmenu li a {
-	color: #fdc073;
+	color: #0059b2;
+	font-weight: bold;
 	text-decoration: none;
 }
 ul.mainmenu li a:hover {
-	color: #FDA83D;
+	color: #999;
 }
 
 .panelitems {
@@ -167,12 +176,14 @@ div.button {
 	min-height: 100%;
 }
 .left-chapters ul {
+    font-family: Geneva, Arial, Helvetica;
 	width: 230px;
 	min-height: 100%;
 	margin: 0;
-	padding: 20px 10px 10px 20px;
+	padding: 0 10px 10px 20px;
 	list-style: none;
 	font-size: 20px;
+	font-weight: bold;
 }
 .left-chapters ul li {
 	margin: 30px 0 0 0;
@@ -183,8 +194,12 @@ div.button {
 	color: #444;
 	text-decoration: none;
 }
-.left-chapters ul li a:hover { color: #CC0000; }
-.left-chapters ul li.share {margin: 60px 0 0 0;}
+
+.share {
+    border-top: 3px solid green;
+}
+.left-chapters ul li a:hover { color: red; }
+.left-chapters ul li.share {margin: 40px 0 0 0;}
 .left-chapters ul li.share p {margin: 30px 0 30px 0;}
 .left-chapters ul li.share a {
 	display: inline-block;
@@ -204,7 +219,7 @@ div.button {
 }
 
 .content {
-	padding: 40px 20px 20px 40px;
+	padding: 0 20px 20px 40px;
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -214,7 +229,7 @@ ul.breadcrumbs {
 	padding: 0;
 	list-style: none;
 	font-size: 20px;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 }
 ul.breadcrumbs li {
 	display: inline-block;
@@ -234,7 +249,7 @@ ul.control {
 	margin: 0;
 	padding: 60px 0 0 0;
 	list-style: none;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 	font-size: 18px;
 	width: 100%;
 }
@@ -249,7 +264,7 @@ ul.content-table {
 	margin: 0;
 	padding: 60px 0 0 30px;
 	list-style: none;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 	font-size: 28px;
 }
 ul.content-table li {
@@ -262,10 +277,10 @@ ul.content-table li a {
 ul.content-table li a:hover {color: #F0711C;}
 
 .content-text {
-	margin: 60px 0 0 30px;
+	margin: 0 0 0 0;
 	color: #000;
 	font-size: 20px;
-	font-family: Yandex Sans Display Light;
+	font-family: Geneva, Arial, Helvetica;
 }
 .content-text h1 {font-size: 32px;}
 
@@ -279,7 +294,7 @@ ul.lang-list {
 	border-top: 1px solid #959A82;
 	box-sizing: border-box;
 	font-size: 18px;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 }
 ul.lang-list li {
 	display: inline-block;
@@ -304,12 +319,12 @@ ul.lang-list li a:hover {color: #fdc073;}
 	padding: 0 10px 0 10px;
 	margin-left: 30px;
 	background: #fff;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 }
 
 .list-topic {
 	margin: 40px 0 60px 0;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 }
 .list-topic p {
 	margin: 0;
@@ -349,7 +364,7 @@ ul.lang-list li a:hover {color: #fdc073;}
 .quote {
 	background: url('../images/blockquote.png') no-repeat 0 10px;
 	padding: 5px 5px 5px 70px;
-	font-family: Sans-serif, Arial, Tahoma;
+	font-family: Verdana, Geneva, Arial, Helvetica;
 	font-style: italic;
 }
 
@@ -427,4 +442,19 @@ ul.lang-list li a:hover {color: #fdc073;}
 }
 .list-pages .page-num-selected:hover {
 	box-shadow: none;
+}
+
+.work-schedule {
+    border-top: 3px solid green;
+
+}
+
+.work-schedule h1 {
+    color: #000;
+    font-size: 20px;
+}
+
+.work-schedule p {
+    color: #999;
+    font-size: 18px;
 }

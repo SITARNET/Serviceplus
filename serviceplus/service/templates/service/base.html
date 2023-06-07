@@ -6,6 +6,7 @@
 <head>
 	<title>{{title}}</title>
 	<link type="text/css" href="{% static 'service/css/styles.css' %}" rel="stylesheet" />
+	<link rel="stylesheet" href="{% static 'service/css/breadcrumbs.css' %}">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" href="{% static 'service/images/main.ico' %}" type="image/x-icon"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,11 +21,11 @@
 				{% for m in menu %}
 					<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
 				{% endfor %}
-				{% if request.user.is_authenticated %}
-				<li class="last">{{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
-				{% else %}
-				<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
-				{% endif %}
+<!--				{% if request.user.is_authenticated %}-->
+<!--				<li class="last">{{user.username}} | <a href="{% url 'logout' %}">Вийти</a></li>-->
+<!--				{% else %}-->
+<!--				<li class="last"><a href="{% url 'register' %}">Реєстрація</a> | <a href="{% url 'login' %}">Ввійти</a></li>-->
+<!--				{% endif %}-->
 			</ul>
 			<div class="clear"></div>
 		</div>
@@ -33,14 +34,14 @@
 
 <table class="table-content" border=0 cellpadding="0" cellspacing="0">
 <tr>
-<!-- Sidebar слева -->
+<!-- Sidebar сліва -->
 
 	<td valign="top" class="left-chapters">
 	<ul id="leftchapters">
 		{% if cat_selected == 0 %}
-		<li class="selected">Все категории</li>
+		<li class="selected">Всі категорії</li>
 		{% else %}
-		<li><a href="{% url 'home' %}">Все категории</a></li>
+		<li><a href="{% url 'home' %}">Всі категорії</a></li>
 		{% endif %}
 
 		{% for c in cats %}
@@ -53,18 +54,29 @@
 		{% endif %}
 		{% endfor %}
 		<li class="share">
-		<p>Наш канал</p>
+		<p>Ми в соціальних мережах</p>
 		<a class="share-yt" href="https://www.youtube.com/" target="_blank" rel="nofollow"></a>
+		</li>
+		<li class="work-schedule">
+			<h1>Графік роботи</h1>
+			<p>Понеділок-п'ятниця:</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;з 9:00 по 18:00</p>
+			<p>Субота:</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;з 10:00 по 16:00</p>
+			<p>Неділя - вихідний</p>
 		</li>
 	</ul>
 </td>
-<!-- Конец Sidebar'а -->
+<!-- Кінец Sidebar'а -->
 <td valign="top" class="content">
 	<!-- Хлебные крошки -->
-	{% block breadcrumbs %}
-	{% endblock %}
+<!--{% if breadcrumbs %}-->
+<!--<div class="breadcrumbs">-->
+<!--    {% include "service/dynamic_breadcrumbs/breadcrumbs.html" %}-->
+<!--</div>-->
+<!--{% endif %}-->
 
-<!-- Блок контента -->
+<!-- Блок контенту -->
 	<div class="content-text">
 {% block content %}
 {% endblock %}
@@ -96,16 +108,17 @@
 		</nav>
 		{% endif %}
 	</div>
-<!-- Конец блока контента -->
+<!-- Коніць блоку контенту -->
 
 </td></tr></table>
 </td></tr>
 <!-- Footer -->
 <tr><td valign=top>
 	<div id="footer">
-		<p>&copy; 2023 Частичное или полное копирование информации с данного сайта для распространения на других ресурсах, в том числе и бумажных, строго запрещено.</p>
+		<p>&copy; 2023 Часткове або повне копіювання інформації з даного сайту для поширення на
+інших ресурсів, у тому числі й паперових, суворо заборонено.</p>
 	</div>
 </td></tr></table>
-<!-- Конец footer'а и страницы -->
+<!-- Кінець footer'у -->
 </body>
 </html>

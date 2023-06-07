@@ -18,7 +18,7 @@ class ServiceAdmin(admin.ModelAdmin):
     def get_html_photo(self, object):
         if object.photo:
             return mark_safe(f"<img src='{object.photo.url}' width=50>")
-    get_html_photo.short_description = "Миниатюра"
+    get_html_photo.short_description = "Мініатюра"
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -31,5 +31,5 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Category, CategoryAdmin)
 
-admin.site.site_title = 'Админ-панель сайта'
-admin.site.site_header = 'Администрация сайта'
+admin.site.site_title = 'Адмін-панель сайту'
+admin.site.site_header = 'Адміністрація сайту'
