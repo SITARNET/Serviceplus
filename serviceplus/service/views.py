@@ -18,7 +18,7 @@ class ServiceHome(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Главная страница")
+        c_def = self.get_user_context(title="СЕРВІС+ - ремонт та обслуговування цифрової технітки")
         return context | c_def
 
     def get_queryset(self):
@@ -31,6 +31,15 @@ class AboutPage(DataMixin, TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Про нас')
+        return context | c_def
+
+
+class PrivacyPage(DataMixin, TemplateView):
+    template_name = 'service/privacy.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Політика конфіденційності')
         return context | c_def
 
 
@@ -53,7 +62,7 @@ class ContactFormView(DataMixin, FormView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Обратная связь")
+        c_def = self.get_user_context(title="Завдати питання")
         return context | c_def
 
     def form_valid(self, form):
@@ -62,7 +71,7 @@ class ContactFormView(DataMixin, FormView):
 
 
 def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+    return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
 
 
 class ShowPost(DataMixin, DetailView):
@@ -101,7 +110,7 @@ class RegisterUser(DataMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Регистрация")
+        c_def = self.get_user_context(title="Реєстрація")
         return context | c_def
 
     def form_valid(self, form):
@@ -116,7 +125,7 @@ class LoginUser(DataMixin, LoginView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Авторизация")
+        c_def = self.get_user_context(title="Авторизація")
         return context | c_def
 
     def get_success_url(self):

@@ -4,7 +4,8 @@ from .models import *
 
 menu = [{'title': "Про нас", 'url_name': 'about'},
         {'title': "Добавити статтю", 'url_name': 'add_page'},
-        {'title': "Зворотній зв'язок", 'url_name': 'contact'},
+        {'title': "Завдати питання", 'url_name': 'contact'},
+        {'title': "Політика конфіденційності", 'url_name': 'privacy'},
         ]
 
 
