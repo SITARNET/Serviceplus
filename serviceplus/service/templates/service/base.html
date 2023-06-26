@@ -1,12 +1,12 @@
 {% load static %}
 {% load service_tags %}
+{% load sass_tags %}
 
 <!DOCTYPE html>
 <html>
 <head>
 	<title>{{title}}</title>
-	<link type="text/css" href="{% static 'service/css/styles.css' %}" rel="stylesheet" />
-	<link rel="stylesheet" href="{% static 'service/css/breadcrumbs.css' %}">
+	<link type="text/css" href="{% sass_src 'service/css/styles.scss' %}" rel="stylesheet" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" href="{% static 'service/images/main.ico' %}" type="image/x-icon"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
